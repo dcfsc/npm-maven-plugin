@@ -25,14 +25,21 @@ public class NPMMojo extends AbstractJavascriptMojo {
     /**
      * Where the resulting files will be downloaded.
      *
-     * @parameter expression="${recess.outputDirectory}" default-value="${basedir}/src/main/resources/META-INF"
+     * @parameter expression="recess.downloadDependencies" default-value="true"
+     */
+    private boolean downloadDependencies;
+
+    /**
+     * Where the resulting files will be downloaded.
+     *
+     * @parameter expression="recess.outputDirectory" default-value="${basedir}/src/main/resources/META-INF"
      */
     private File outputDirectory;
 
     /**
      * The identifiers of the packages to download. Use the following syntax: package:version
      *
-     * @parameter expression="${recess.packages}
+     * @parameter expression="recess.packages"
      * @required
      */
     private String [] packages;
@@ -51,7 +58,7 @@ public class NPMMojo extends AbstractJavascriptMojo {
 
         NPMModule.proxy = settings.getActiveProxy();
         for (String aPackage : packages) {
-            NPMModule.fromQueryString(log,aPackage).saveToFileWithDependencies(outputDirectory);
+            NPMModule.fromQueryString(log,aPackage,downloadDependencies).saveToFileWithDependencies(outputDirectory, downloadDependencies);
         }
     }
 }
